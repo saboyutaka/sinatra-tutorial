@@ -1,5 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'json'
+json_path = File.dirname(__FILE__) + '/data/data.json'
 
 set :public_folder, 'public'
 
@@ -38,12 +40,50 @@ get '/p' do
 end
 
 get '/form' do
+  open(json_path) do |io|
+    @data = JSON.load(io)
+  end
   erb :form
 end
 
 post '/form' do
-  @name = params[:name]
-  @email = params[:email]
-  @content = params[:content]
-  erb :form_post
+  filename = params[:file][:filename]
+  file = params[:file][:tempfile]
+
+  File.open("./public/image/#{filename}", 'wb') do |f|
+    f.write(file.read)
+  end
+
+  datum = {
+    "name" => params[:name],
+    "email" => params[:email],
+    "content" => params[:content],
+    "image" => filename
+  }
+
+  data = []
+  open(json_path) do |io|
+    data = JSON.load(io)
+  end
+  data << datum
+  open(json_path, 'w') do |io|
+    JSON.dump(data, io)
+  end
+
+  redirect '/form'
+end
+
+get "/image" do
+  erb :image_form
+end
+
+post '/image' do
+  @filename = params[:file][:filename]
+  file = params[:file][:tempfile]
+
+  File.open("./public/image/#{@filename}", 'wb') do |f|
+    f.write(file.read)
+  end
+
+  erb :image_show
 end
