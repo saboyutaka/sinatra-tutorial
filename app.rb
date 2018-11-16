@@ -5,6 +5,8 @@ json_path = File.dirname(__FILE__) + '/data/data.json'
 
 set :public_folder, 'public'
 
+enable :sessions
+
 get '/' do
   erb :index
 end
@@ -71,6 +73,17 @@ post '/form' do
   end
 
   redirect '/form'
+end
+
+get '/session' do
+  @name = session[:name]
+  erb :session_form
+end
+
+post '/session' do
+  session[:name] = params[:name]
+
+  redirect '/session'
 end
 
 get "/image" do
