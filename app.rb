@@ -86,6 +86,30 @@ post '/session' do
   redirect '/session'
 end
 
+get '/login' do
+  @name = session[:login]
+  @message = session[:message]
+  session[:message] = nil
+  erb :login_form
+end
+
+post '/login' do
+  if params[:name] == 'sabo' && params[:password] == 'codebase'
+    session[:login] = 'さぼ'
+    session[:message] = 'ログインしました'
+  else
+    session[:message] = 'ログイン失敗しました'
+  end
+
+  redirect '/login'
+end
+
+get '/logout' do
+  session[:login] = nil
+  redirect '/login'
+end
+
+
 get "/image" do
   erb :image_form
 end

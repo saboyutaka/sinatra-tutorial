@@ -1,0 +1,22 @@
+<h1>Login</h1>
+
+<%= @message %>
+
+<% if @name %>
+  <p>
+    <%= @name %>さん、こんにちわ
+  </p>
+
+  <a href='/logout'>ログアウト</a>
+<% else %>
+  <form action="/login" method="POST">
+    <label for="name">名前：</label>
+    <input type="text" name="name" id="name"/>
+
+    <label for="password">パスワード</label>
+    <input type="password" name="password" id="password"/>
+
+    <input type="submit" value="送信する">
+  </form>
+
+<% end %>
