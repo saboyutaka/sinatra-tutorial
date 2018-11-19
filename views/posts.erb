@@ -1,0 +1,32 @@
+<h1>Form</h1>
+
+<form action="/posts" method="POST" enctype="multipart/form-data">
+  <label for="title">タイトル：</label>
+  <input type="text" name="title" id="title"/>
+  <label for="file">画像：</label>
+  <input type="file" name="file" id="file"/>
+
+  <input type="submit" value="送信する">
+</form>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>CreatedAt</th>
+    <th>Image</th>
+  </tr>
+
+  <% @posts.each do |post| %>
+    <tr>
+      <td><%= post['id'] %></td>
+      <td><%= post['title'] %></td>
+      <td><%= post['created_at'] %></td>
+      <td>
+        <% if post['image'] %>
+          <img src="/image/<%= post['image'] %>" width="200" height="200"/>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
